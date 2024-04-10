@@ -24,7 +24,8 @@ pysto_kb = types.ReplyKeyboardMarkup(
 last_kb = [
     [
         types.KeyboardButton(text="Нравится"),
-        types.KeyboardButton(text="Не нравится")
+        types.KeyboardButton(text="Не нравится"),
+        types.KeyboardButton(text="Перестать выбирать фильмы"),
 
     ],
 ]
@@ -57,9 +58,17 @@ async def cmd_start(message: types.Message):
     await message.answer("Здравствуйте! Я Телеграмм-бот для выбора фильма. Я имею следующие команды:\n"
                          "/id (номер id) - для привязки к Вашему другу\n"
                          "/myid - узнать Ваш id\n"
-                         "/start - я снова повторю Вам мои команды")
+                         "/start - я снова повторю Вам мои команды \n"
+                         "Я могу подробно все описать по команде /help!")
 
-# Обработчик команды /myid
+@router.message(Command("help"))
+async def help(message: types.Message):
+    await message.answer("Здравствуйте! Я Телеграмм-бот для выбора фильма. Я имею следующие команды:\n"
+                         "/id (номер id) - для привязки к Вашему другу\n"
+                         "/myid - узнать Ваш id\n"
+                         "/start - я снова повторю Вам мои команды \n"
+                         "Я могу подробно все описать по команде /help!")
+ #Обработчик команды /myid
 @router.message(Command('myid'))
 async def get_user_id(message: types.Message):
     user_id = message.from_user.id
