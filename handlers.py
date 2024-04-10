@@ -7,6 +7,7 @@ from aiogram import Bot, types, F, Router
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, \
     InlineKeyboardButton
 import pymysql
+
 router = Router()
 
 pysto = [
@@ -38,7 +39,6 @@ something = [
     [
         types.KeyboardButton(text="Выбирать фильмы"),
 
-
     ],
 ]
 kbsomth = types.ReplyKeyboardMarkup(
@@ -48,10 +48,10 @@ kbsomth = types.ReplyKeyboardMarkup(
 )
 
 
-
 @router.message(F.text.lower() == 'вернуться в начало')
 async def otkaz(message: types.Message):
     await message.answer('напишите /start, что бы вернуться в начало')
+
 
 @router.message(Command("start"))
 async def cmd_start(message: types.Message):
@@ -61,14 +61,18 @@ async def cmd_start(message: types.Message):
                          "/start - я снова повторю Вам мои команды \n"
                          "Я могу подробно все описать по команде /help!")
 
+
 @router.message(Command("help"))
-async def help(message: types.Message):
-    await message.answer("Здравствуйте! Я Телеграмм-бот для выбора фильма. Я имею следующие команды:\n"
-                         "/id (номер id) - для привязки к Вашему другу\n"
-                         "/myid - узнать Ваш id\n"
-                         "/start - я снова повторю Вам мои команды \n"
-                         "Я могу подробно все описать по команде /help!")
- #Обработчик команды /myid
+async def help(message: typeапввыаs.Message):
+    await message.answer('Я бот, который помогает Вам с Вашем с другом выбрать фильм. Как мной пользоваться? Все очень '
+                         'просто: \n1. Узнайте у своего друга id. Это можно сделать прям у меня, написав команду /myid, '
+                         'либо'
+                         ',если Вы мне не доверяете, в любом другом боте ТГ. \n2. Вам нужно прописать команду /id (id '
+                         'Вашего друга) и ему придёт потверждение запрос\n'
+                         '3. Выберите, какой Вы хотите смотреть жанр и выбирайте нравится Вам фильм или нет. Вашему '
+                         'другу будут предложены эти же фильмы и когда у вас будет совпадения, то я скажу Вам об этом')
+
+# Обработчик команды /myid
 @router.message(Command('myid'))
 async def get_user_id(message: types.Message):
     user_id = message.from_user.id
@@ -169,6 +173,8 @@ async def otkaz(message: types.Message):
             connection.commit()
     finally:
         connection.close()
+
+
 @router.message(F.text.lower() == 'принять')
 async def accept(message: types.Message):
     kb = [
@@ -214,6 +220,7 @@ async def accept(message: types.Message):
         # Всегда закрываем соединение с БД после использования
         connection.close()
 
+
 @router.message(F.text.lower() == 'cемейный')
 async def famaly(message: types.Message):
     connection = pymysql.connect(host='localhost',
@@ -226,7 +233,6 @@ async def famaly(message: types.Message):
     with connection.cursor() as cursor:
         sql_select = "SELECT * FROM user WHERE tgid = %s"
         cursor.execute(sql_select, (message.from_user.id,))
-
 
         result = cursor.fetchone()
         sql_select = "SELECT * FROM user WHERE linktgid = %s"
@@ -268,6 +274,7 @@ async def famaly(message: types.Message):
             # Всегда закрываем соединение с БД после использования
             connection.close()
 
+
 @router.message(F.text.lower() == 'фантастика')
 async def fantasion(message: types.Message):
     connection = pymysql.connect(host='localhost',
@@ -280,7 +287,6 @@ async def fantasion(message: types.Message):
     with connection.cursor() as cursor:
         sql_select = "SELECT * FROM user WHERE tgid = %s"
         cursor.execute(sql_select, (message.from_user.id,))
-
 
         result = cursor.fetchone()
         sql_select = "SELECT * FROM user WHERE linktgid = %s"
@@ -339,7 +345,6 @@ async def horror(message: types.Message):
         sql_select = "SELECT * FROM user WHERE tgid = %s"
         cursor.execute(sql_select, (message.from_user.id,))
 
-
         result = cursor.fetchone()
         sql_select = "SELECT * FROM user WHERE linktgid = %s"
         cursor.execute(sql_select, (message.from_user.id,))
@@ -380,6 +385,7 @@ async def horror(message: types.Message):
             # Всегда закрываем соединение с БД после использования
             connection.close()
 
+
 @router.message(F.text.lower() == 'боевик')
 async def weaponer(message: types.Message):
     connection = pymysql.connect(host='localhost',
@@ -392,7 +398,6 @@ async def weaponer(message: types.Message):
     with connection.cursor() as cursor:
         sql_select = "SELECT * FROM user WHERE tgid = %s"
         cursor.execute(sql_select, (message.from_user.id,))
-
 
         result = cursor.fetchone()
         sql_select = "SELECT * FROM user WHERE linktgid = %s"
@@ -437,6 +442,7 @@ async def weaponer(message: types.Message):
             # Всегда закрываем соединение с БД после использования
             connection.close()
 
+
 @router.message(F.text.lower() == 'мультик')
 async def cartoon(message: types.Message):
     connection = pymysql.connect(host='localhost',
@@ -449,7 +455,6 @@ async def cartoon(message: types.Message):
     with connection.cursor() as cursor:
         sql_select = "SELECT * FROM user WHERE tgid = %s"
         cursor.execute(sql_select, (message.from_user.id,))
-
 
         result = cursor.fetchone()
         sql_select = "SELECT * FROM user WHERE linktgid = %s"
@@ -475,7 +480,7 @@ async def cartoon(message: types.Message):
     if result['nubmerfilm'] == 0:
         cartoon1 = ChoosingFilm(80, 'cartoon')
     else:
-         cartoon1 = ChoosingFilm(result['nubmerfilm'], 'cartoon')
+        cartoon1 = ChoosingFilm(result['nubmerfilm'], 'cartoon')
     if cartoon1.check_film():
         await message.reply_photo(
             photo=types.FSInputFile(
@@ -497,6 +502,7 @@ async def cartoon(message: types.Message):
             # Всегда закрываем соединение с БД после использования
             connection.close()
 
+
 @router.message(F.text.lower() == 'триллер')
 async def triller(message: types.Message):
     connection = pymysql.connect(host='localhost',
@@ -509,7 +515,6 @@ async def triller(message: types.Message):
     with connection.cursor() as cursor:
         sql_select = "SELECT * FROM user WHERE tgid = %s"
         cursor.execute(sql_select, (message.from_user.id,))
-
 
         result = cursor.fetchone()
         sql_select = "SELECT * FROM user WHERE linktgid = %s"
@@ -529,7 +534,7 @@ async def triller(message: types.Message):
     if result['nubmerfilm'] == 0:
         triller1 = ChoosingFilm(100, 'triller')
     else:
-         triller1 = ChoosingFilm(result['nubmerfilm'], 'triller')
+        triller1 = ChoosingFilm(result['nubmerfilm'], 'triller')
     if triller1.check_film():
         await message.reply_photo(
             photo=types.FSInputFile(
@@ -550,6 +555,8 @@ async def triller(message: types.Message):
         finally:
             # Всегда закрываем соединение с БД после использования
             connection.close()
+
+
 @router.message(F.text.lower() == 'нравится')
 async def likefiml(message: types.Message):
     # Подключаемся к базе данных
@@ -604,11 +611,14 @@ async def likefiml(message: types.Message):
         # Всегда закрываем соединение с БД после использования
         connection.close()
 
+
 @router.message(F.text.lower() == 'выбирать фильмы')
 async def perexod(message: types.Message):
     task2 = asyncio.create_task(dislikefiml(message))
 
     await task2
+
+
 @router.message(F.text.lower() == 'не нравится')
 async def dislikefiml(message: types.Message):
     connection = pymysql.connect(host='localhost',
@@ -653,6 +663,7 @@ async def dislikefiml(message: types.Message):
         # Всегда закрываем соединение с БД после использования
         connection.close()
 
+
 @router.message(F.text.lower() == 'перестать выбирать фильмы')
 async def stop_choosing_genre(message: types.Message):
     # Подключаемся к базе данных
@@ -662,7 +673,6 @@ async def stop_choosing_genre(message: types.Message):
                                  db='pythonbot',
                                  charset='utf8mb4',
                                  cursorclass=pymysql.cursors.DictCursor)
-
 
     try:
         with connection.cursor() as cursor:
