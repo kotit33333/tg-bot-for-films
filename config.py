@@ -1,0 +1,6 @@
+bot_token = '6475146201:AAGwITIn25nrx834CmEn-6zoFjuGxkUKsy8'
+chatid = '-1001546659140'
+host = 'localhost'
+db_name = 'pythonbot'
+user = 'Kotit'
+password = '141923vaniqwerty'
