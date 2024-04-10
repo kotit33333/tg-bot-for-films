@@ -63,7 +63,7 @@ async def cmd_start(message: types.Message):
 
 
 @router.message(Command("help"))
-async def help(message: typeапввыаs.Message):
+async def help(message: types.Message):
     await message.answer('Я бот, который помогает Вам с Вашем с другом выбрать фильм. Как мной пользоваться? Все очень '
                          'просто: \n1. Узнайте у своего друга id. Это можно сделать прям у меня, написав команду /myid, '
                          'либо'
