@@ -1,1 +1,6 @@
 requests
+aiogram
+asyncio
+aiogram.filters
+aiogram.types
+pymysql
